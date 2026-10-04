@@ -1,0 +1,3381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidiki Notes</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --danger: #ef4444;
+    --danger-bg: #fee2e2;
+    --success: #10b981;
+    --success-dark: #059669;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ================================
+   APP
+================================ */
+
+.app {
+    min-height: 100vh;
+}
+
+/* ================================
+   SIDEBAR
+================================ */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 270px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: transform .25s ease;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.logo h1 {
+    font-size: 20px;
+}
+
+.logo small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+
+.btn {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-weight: 600;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.primary:hover {
+    background: var(--primary-dark);
+}
+
+.secondary {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+/* ================================
+   SIDEBAR BUTTONS
+================================ */
+
+.side-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.side-buttons .btn {
+    width: 100%;
+}
+
+/* ================================
+   NAVIGATION
+================================ */
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 11px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-align: left;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.counter {
+    margin-left: auto;
+    background: #f3f4f6;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.folders {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 25px;
+}
+
+.folder-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.folder-title button {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+}
+
+.folder {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 3px;
+}
+
+.folder:hover {
+    background: #f8f9ff;
+}
+
+.folder.active {
+    background: var(--primary-light);
+}
+
+.folder button {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+}
+
+.folder-name {
+    flex: 1;
+    text-align: left;
+    padding: 9px 4px;
+}
+
+.folder-menu {
+    padding: 7px;
+}
+
+.subfolders {
+    margin-left: 17px;
+}
+
+.sidebar-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+/* ================================
+   MAIN
+================================ */
+
+.main {
+    margin-left: 270px;
+    min-height: 100vh;
+}
+
+/* ================================
+   TOPBAR
+================================ */
+
+.topbar {
+    height: 70px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+}
+
+.mobile-menu {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 23px;
+}
+
+.search {
+    width: min(600px, 70%);
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.top-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.save-status {
+    color: var(--success);
+    font-size: 13px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ================================
+   CONTENT
+================================ */
+
+.content {
+    padding: 30px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* ================================
+   HEADER
+================================ */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.breadcrumb {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.page-header p {
+    color: var(--muted);
+}
+
+/* ================================
+   STATS
+================================ */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.blue {
+    background: #eff6ff;
+}
+
+.purple {
+    background: #f5f3ff;
+}
+
+.yellow {
+    background: #fffbeb;
+}
+
+.stat strong {
+    font-size: 21px;
+    display: block;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* ================================
+   NOTES
+================================ */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header select {
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--card);
+    color: var(--text);
+}
+
+.notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 18px;
+}
+
+.note {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    min-height: 190px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: .2s;
+}
+
+.note:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.note h3 {
+    font-size: 17px;
+    overflow-wrap: anywhere;
+}
+
+.star {
+    color: #f59e0b;
+}
+
+.preview {
+    flex: 1;
+    margin-top: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.note-footer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* ================================
+   EMPTY
+================================ */
+
+.empty {
+    min-height: 300px;
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty p {
+    color: var(--muted);
+    margin: 8px 0 18px;
+}
+
+/* ================================
+   EDITOR
+================================ */
+
+.editor {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.editor-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.back {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-weight: bold;
+}
+
+.editor-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* SAVE BUTTON */
+
+.save-note {
+    min-height: 38px;
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: var(--success);
+    color: white;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.save-note:hover {
+    background: var(--success-dark);
+}
+
+.save-note.saved {
+    background: var(--success-dark);
+}
+
+/* DELETE BUTTON */
+
+.delete-note {
+    min-height: 38px;
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: var(--danger-bg);
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.delete-note:hover {
+    background: #fecaca;
+}
+
+.favorite {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    font-size: 18px;
+}
+
+/* ================================
+   EDITOR CARD
+================================ */
+
+.editor-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 650px;
+}
+
+.title-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    padding: 30px 45px 10px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.meta {
+    padding: 0 45px 20px;
+    color: var(--muted);
+    font-size: 12px;
+    display: flex;
+    gap: 15px;
+}
+
+/* ================================
+   TOOLBAR
+================================ */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 9px 35px;
+    background: #fafafa;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+}
+
+.toolbar button {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.toolbar button:hover {
+    background: #e5e7eb;
+}
+
+.separator {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+/* ================================
+   NOTE CONTENT
+================================ */
+
+.note-content {
+    min-height: 480px;
+    padding: 30px 45px;
+    outline: none;
+    line-height: 1.8;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+.note-content:empty::before {
+    content: attr(data-placeholder);
+    color: #cbd5e1;
+}
+
+.note-content h2 {
+    margin: 20px 0 10px;
+}
+
+.note-content h3 {
+    margin: 15px 0 8px;
+}
+
+.note-content blockquote {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    padding: 10px 20px;
+    margin: 15px 0;
+}
+
+/* ================================
+   MODAL
+================================ */
+
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 3000;
+}
+
+.modal {
+    width: min(450px, 100%);
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header button {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 22px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.modal-body input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    background: var(--card);
+    color: var(--text);
+}
+
+.modal-parent {
+    margin-top: 15px;
+    padding: 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.modal-parent strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--text);
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ================================
+   DARK MODE
+================================ */
+
+body.dark {
+    --bg: #111827;
+    --card: #1f2937;
+    --text: #f3f4f6;
+    --muted: #9ca3af;
+    --border: #374151;
+    --primary-light: #312e81;
+}
+
+body.dark .search {
+    background: #111827;
+}
+
+body.dark .toolbar {
+    background: #172033;
+}
+
+body.dark .section-header select,
+body.dark .modal-body input,
+body.dark .favorite {
+    color: var(--text);
+}
+
+body.dark .blue {
+    background: #172554;
+}
+
+body.dark .purple {
+    background: #2e1065;
+}
+
+body.dark .yellow {
+    background: #451a03;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        box-shadow: 10px 0 30px rgba(0,0,0,.15);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .topbar {
+        padding: 0 14px;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .top-right .save-status,
+    .top-right .avatar {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 14px 90px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .page-header .btn {
+        width: 100%;
+    }
+
+    .notes {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .editor-actions {
+        width: 100%;
+    }
+
+    .save-note,
+    .delete-note {
+        flex: 1;
+    }
+
+    .title-input {
+        padding: 25px 20px 10px;
+        font-size: 26px;
+    }
+
+    .meta {
+        padding: 0 20px 18px;
+    }
+
+    .toolbar {
+        padding: 9px 12px;
+    }
+
+    .note-content {
+        padding: 25px 20px 80px;
+        min-height: 55vh;
+    }
+}
+
+/* ================================
+   TELEPHONE
+================================ */
+
+@media (max-width: 500px) {
+
+    .topbar {
+        height: 62px;
+    }
+
+    .content {
+        padding: 16px 12px 90px;
+    }
+
+    .page-header h2 {
+        font-size: 23px;
+    }
+
+    .stat {
+        padding: 14px;
+    }
+
+    .editor-card {
+        border-radius: 10px;
+        min-height: calc(100vh - 150px);
+    }
+
+    .editor-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+    }
+
+    .favorite {
+        width: 100%;
+    }
+
+    .save-note,
+    .delete-note {
+        min-height: 42px;
+    }
+
+    .toolbar button {
+        padding: 9px 12px;
+    }
+
+}
+
+/* ================================
+   MOBILE BOTTOM BAR
+================================ */
+
+@media (max-width: 800px) {
+
+    .mobile-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: var(--card);
+        border-top: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        z-index: 2000;
+    }
+
+    .mobile-bottom button {
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        font-size: 11px;
+    }
+
+    .mobile-bottom button.active {
+        color: var(--primary);
+    }
+
+    .mobile-bottom span {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 801px) {
+    .mobile-bottom {
+        display: none;
+    }
+}
+</style>
+
+<!-- Installation de Sidiki Notes sur mobile -->
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#4f46e5">
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Sidiki Notes"
+>
+
+</head>
+
+<body>
+
+<!-- Installation de Sidiki Notes sur mobile -->
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#4f46e5">
+
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Sidiki Notes"
+>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            📝
+        </div>
+
+        <div>
+            <h1>Sidiki Notes</h1>
+            <small>Mon espace de notes</small>
+        </div>
+
+    </div>
+
+    <div class="side-buttons">
+
+        <button class="btn primary" id="newNote">
+            ＋ Nouvelle note
+        </button>
+
+        <button class="btn secondary" id="newFolder">
+            📁 Nouveau dossier
+        </button>
+
+    </div>
+
+    <nav class="nav">
+
+        <button class="active" data-view="all">
+            📚 Toutes les notes
+            <span class="counter" id="noteCount">0</span>
+        </button>
+
+        <button data-view="recent">
+            🕘 Récentes
+        </button>
+
+        <button data-view="favorites">
+            ⭐ Favoris
+        </button>
+
+    </nav>
+
+    <div class="folders">
+
+        <div class="folder-title">
+
+            <span>Dossiers</span>
+
+            <button id="quickFolder">
+                ＋
+            </button>
+
+        </div>
+
+        <div id="folderTree"></div>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <nav class="nav">
+
+            <button data-view="trash">
+                🗑️ Corbeille
+                <span class="counter" id="trashCount">0</span>
+            </button>
+
+            <button id="darkMode">
+                🌙 Mode sombre
+            </button>
+
+        </nav>
+
+    </div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <button class="mobile-menu" id="mobileMenu">
+            ☰
+        </button>
+
+        <div class="search">
+
+            🔍
+
+            <input
+                type="search"
+                id="search"
+                placeholder="Rechercher..."
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="top-right">
+
+            <span class="save-status" id="saveStatus">
+                ✓ Enregistré
+            </span>
+
+            <div class="avatar">
+                S
+            </div>
+
+        </div>
+
+    </header>
+
+    <section class="content">
+
+        <!-- LISTE -->
+
+        <div id="listPage">
+
+            <div class="page-header">
+
+                <div>
+
+                    <div class="breadcrumb" id="breadcrumb">
+                        Accueil
+                    </div>
+
+                    <h2 id="pageTitle">
+                        Toutes les notes
+                    </h2>
+
+                    <p id="pageDescription">
+                        Retrouvez toutes vos notes.
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn primary"
+                    id="headerNewNote"
+                >
+                    ＋ Nouvelle note
+                </button>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-icon blue">
+                        📝
+                    </div>
+
+                    <div>
+                        <strong id="statNotes">0</strong>
+                        <span>Notes</span>
+                    </div>
+
+                </div>
+
+                <div class="stat">
+
+                    <div class="stat-icon purple">
+                        📁
+                    </div>
+
+                    <div>
+                        <strong id="statFolders">0</strong>
+                        <span>Dossiers</span>
+                    </div>
+
+                </div>
+
+                <div class="stat">
+
+                    <div class="stat-icon yellow">
+                        ⭐
+                    </div>
+
+                    <div>
+                        <strong id="statFavorites">0</strong>
+                        <span>Favoris</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section-header">
+
+                <h3 id="notesTitle">
+                    Mes notes
+                </h3>
+
+                <select id="sort">
+
+                    <option value="updated">
+                        Dernière modification
+                    </option>
+
+                    <option value="created">
+                        Date de création
+                    </option>
+
+                    <option value="title">
+                        Nom
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="notes" id="notes"></div>
+
+            <div class="empty hidden" id="empty">
+
+                <div class="empty-icon">
+                    📝
+                </div>
+
+                <h3>Aucune note</h3>
+
+                <p>
+                    Commencez à écrire votre première note.
+                </p>
+
+                <button
+                    class="btn primary"
+                    id="emptyButton"
+                >
+                    ＋ Créer une note
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- EDITOR -->
+
+        <div class="editor hidden" id="editor">
+
+            <div class="editor-top">
+
+                <button class="back" id="back">
+                    ← Retour
+                </button>
+
+                <div class="editor-actions">
+
+                    <span
+                        class="save-status"
+                        id="editorSave"
+                    >
+                        ✓ Enregistré
+                    </span>
+
+                    <button
+                        class="save-note"
+                        id="saveNoteBtn"
+                    >
+                        💾 Enregistrer
+                    </button>
+
+                    <button
+                        class="favorite"
+                        id="favorite"
+                    >
+                        ☆
+                    </button>
+
+                    <button
+                        class="delete-note"
+                        id="deleteNote"
+                    >
+                        🗑️ Supprimer
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="editor-card">
+
+                <input
+                    class="title-input"
+                    id="noteTitle"
+                    placeholder="Titre de la note"
+                    maxlength="200"
+                >
+
+                <div class="meta">
+
+                    <span id="noteFolder">
+                        📁 Sans dossier
+                    </span>
+
+                    <span id="noteDate">
+                        Aujourd'hui
+                    </span>
+
+                </div>
+
+                <div class="toolbar">
+
+                    <button data-command="bold" title="Gras">
+                        <strong>B</strong>
+                    </button>
+
+                    <button data-command="italic" title="Italique">
+                        <em>I</em>
+                    </button>
+
+                    <button data-command="underline" title="Souligné">
+                        <u>U</u>
+                    </button>
+
+                    <span class="separator"></span>
+
+                    <button
+                        data-command="formatBlock"
+                        data-value="h2"
+                    >
+                        H2
+                    </button>
+
+                    <button
+                        data-command="formatBlock"
+                        data-value="h3"
+                    >
+                        H3
+                    </button>
+
+                    <span class="separator"></span>
+
+                    <button data-command="insertUnorderedList">
+                        • Liste
+                    </button>
+
+                    <button data-command="insertOrderedList">
+                        1. Liste
+                    </button>
+
+                    <button
+                        data-command="formatBlock"
+                        data-value="blockquote"
+                    >
+                        ❝
+                    </button>
+
+                </div>
+
+                <div
+                    id="noteContent"
+                    class="note-content"
+                    contenteditable="true"
+                    data-placeholder="Commencez à écrire votre note..."
+                    spellcheck="true"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+
+<!-- MOBILE NAVIGATION -->
+
+<nav class="mobile-bottom">
+
+    <button data-mobile-view="all" class="active">
+        <span>📚</span>
+        Notes
+    </button>
+
+    <button data-mobile-view="favorites">
+        <span>⭐</span>
+        Favoris
+    </button>
+
+    <button id="mobileNew">
+        <span>＋</span>
+        Nouvelle
+    </button>
+
+    <button data-mobile-view="trash">
+        <span>🗑️</span>
+        Corbeille
+    </button>
+
+</nav>
+
+<!-- MODAL DOSSIER -->
+
+<div class="modal-bg hidden" id="folderModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Nouveau dossier
+            </h3>
+
+            <button id="closeModal">
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <label for="folderName">
+                Nom du dossier
+            </label>
+
+            <input
+                id="folderName"
+                placeholder="Ex : Travail"
+                maxlength="100"
+                autocomplete="off"
+            >
+
+            <div class="modal-parent">
+
+                📁 Dossier parent :
+
+                <strong id="parentName">
+                    Aucun — Dossier principal
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="btn secondary"
+                id="cancelModal"
+            >
+                Annuler
+            </button>
+
+            <button
+                class="btn primary"
+                id="createFolder"
+            >
+                Créer
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   SIDIKI NOTES - JAVASCRIPT
+========================================================= */
+
+const STORAGE_KEY = "sidiki_notes_mobile";
+
+const DEFAULT_DATA = {
+    folders: [],
+    notes: [],
+    dark: false
+};
+
+let data = loadData();
+
+let currentView = "all";
+let currentFolder = null;
+let currentNote = null;
+let parentFolder = null;
+let searchText = "";
+let sortType = "updated";
+let saveTimer = null;
+
+const $ = id => document.getElementById(id);
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function loadData() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+            return {
+                folders: [],
+                notes: [],
+                dark: false
+            };
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        return {
+            folders: Array.isArray(parsed.folders)
+                ? parsed.folders
+                : [],
+
+            notes: Array.isArray(parsed.notes)
+                ? parsed.notes
+                : [],
+
+            dark: Boolean(parsed.dark)
+        };
+
+    } catch (error) {
+
+        console.error(
+            "Erreur de lecture du stockage :",
+            error
+        );
+
+        return {
+            folders: [],
+            notes: [],
+            dark: false
+        };
+    }
+}
+
+function saveData() {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(data)
+        );
+
+        $("saveStatus").textContent =
+            "✓ Enregistré";
+
+        $("editorSave").textContent =
+            "✓ Enregistré";
+
+    } catch (error) {
+
+        console.error(
+            "Erreur de sauvegarde :",
+            error
+        );
+
+        $("saveStatus").textContent =
+            "⚠ Erreur de sauvegarde";
+
+        $("editorSave").textContent =
+            "⚠ Erreur de sauvegarde";
+    }
+}
+
+/* =========================================================
+   ID
+========================================================= */
+
+function id() {
+
+    return (
+        Date.now().toString(36) +
+        Math.random()
+            .toString(36)
+            .substring(2)
+    );
+}
+
+/* =========================================================
+   SECURITE
+========================================================= */
+
+function safe(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+function htmlToText(html) {
+
+    const div =
+        document.createElement("div");
+
+    div.innerHTML = html || "";
+
+    return div.textContent || "";
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function dateText(time) {
+
+    const diff =
+        Math.max(0, Date.now() - Number(time || Date.now()));
+
+    const minute = 60000;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    if (diff < minute)
+        return "À l'instant";
+
+    if (diff < hour)
+        return (
+            "Il y a " +
+            Math.floor(diff / minute) +
+            " min"
+        );
+
+    if (diff < day)
+        return (
+            "Il y a " +
+            Math.floor(diff / hour) +
+            " h"
+        );
+
+    if (diff < day * 7)
+        return (
+            "Il y a " +
+            Math.floor(diff / day) +
+            " j"
+        );
+
+    return new Date(time)
+        .toLocaleDateString("fr-FR");
+}
+
+/* =========================================================
+   DOSSIERS
+========================================================= */
+
+function getFolder(folderId) {
+
+    return data.folders.find(
+        folder =>
+            folder.id === folderId &&
+            !folder.deleted
+    );
+}
+
+function folderName(folderId) {
+
+    const folder =
+        getFolder(folderId);
+
+    return folder
+        ? folder.name
+        : "Sans dossier";
+}
+
+function children(parent) {
+
+    return data.folders.filter(
+        folder =>
+            !folder.deleted &&
+            (folder.parent || null) === (parent || null)
+    );
+}
+
+/* =========================================================
+   OBTENIR TOUS LES DESCENDANTS
+========================================================= */
+
+function getFolderDescendants(folderId) {
+
+    const result = [];
+
+    function collect(parentId) {
+
+        const descendants =
+            data.folders.filter(
+                folder =>
+                    !folder.deleted &&
+                    folder.parent === parentId
+            );
+
+        descendants.forEach(folder => {
+
+            result.push(folder.id);
+
+            collect(folder.id);
+
+        });
+    }
+
+    collect(folderId);
+
+    return result;
+}
+
+/* =========================================================
+   AFFICHER DOSSIERS
+========================================================= */
+
+function renderFolders() {
+
+    const tree =
+        $("folderTree");
+
+    tree.innerHTML = "";
+
+    children(null).forEach(
+        folder => {
+
+            tree.appendChild(
+                createFolderElement(
+                    folder,
+                    0
+                )
+            );
+
+        }
+    );
+
+    if (!children(null).length) {
+
+        tree.innerHTML = `
+            <div style="
+                color:var(--muted);
+                padding:12px 5px;
+                font-size:13px;
+            ">
+                Aucun dossier
+            </div>
+        `;
+    }
+}
+
+function createFolderElement(folder, level) {
+
+    const wrapper =
+        document.createElement("div");
+
+    const row =
+        document.createElement("div");
+
+    row.className = "folder";
+
+    if (
+        currentView === "folder" &&
+        currentFolder === folder.id
+    ) {
+
+        row.classList.add("active");
+    }
+
+    row.style.paddingLeft =
+        `${level * 6}px`;
+
+    const arrow =
+        document.createElement("button");
+
+    const subfolders =
+        children(folder.id);
+
+    arrow.textContent =
+        subfolders.length
+            ? "▶"
+            : "";
+
+    arrow.setAttribute(
+        "aria-label",
+        "Sous-dossiers"
+    );
+
+    row.appendChild(arrow);
+
+    const name =
+        document.createElement("button");
+
+    name.className = "folder-name";
+
+    name.innerHTML =
+        `📁 ${safe(folder.name)}`;
+
+    name.onclick = () => {
+
+        currentView = "folder";
+        currentFolder = folder.id;
+
+        closeEditor();
+        render();
+
+        if (window.innerWidth <= 800) {
+
+            $("sidebar")
+                .classList
+                .remove("open");
+        }
+    };
+
+    row.appendChild(name);
+
+    const menu =
+        document.createElement("button");
+
+    menu.className = "folder-menu";
+
+    menu.textContent = "⋮";
+
+    menu.setAttribute(
+        "aria-label",
+        "Menu du dossier"
+    );
+
+    menu.onclick = event => {
+
+        event.stopPropagation();
+
+        const action =
+            prompt(
+                "Action :\n1 = Sous-dossier\n2 = Renommer\n3 = Supprimer"
+            );
+
+        if (action === "1")
+            openFolder(folder.id);
+
+        if (action === "2")
+            renameFolder(folder.id);
+
+        if (action === "3")
+            deleteFolder(folder.id);
+    };
+
+    row.appendChild(menu);
+
+    wrapper.appendChild(row);
+
+    const sub =
+        document.createElement("div");
+
+    sub.className = "subfolders";
+
+    subfolders.forEach(child => {
+
+        sub.appendChild(
+            createFolderElement(
+                child,
+                level + 1
+            )
+        );
+
+    });
+
+    wrapper.appendChild(sub);
+
+    return wrapper;
+}
+
+/* =========================================================
+   DOSSIER
+========================================================= */
+
+function openFolder(parent = null) {
+
+    parentFolder = parent;
+
+    $("modalTitle").textContent =
+        parent
+            ? "Nouveau sous-dossier"
+            : "Nouveau dossier";
+
+    $("parentName").textContent =
+        parent
+            ? "📁 " + folderName(parent)
+            : "Aucun — Dossier principal";
+
+    $("folderName").value = "";
+
+    $("folderModal")
+        .classList
+        .remove("hidden");
+
+    setTimeout(
+        () => $("folderName").focus(),
+        100
+    );
+}
+
+function closeModal() {
+
+    $("folderModal")
+        .classList
+        .add("hidden");
+
+    parentFolder = null;
+}
+
+function createFolder() {
+
+    const name =
+        $("folderName")
+            .value
+            .trim();
+
+    if (!name) {
+
+        alert(
+            "Veuillez entrer un nom."
+        );
+
+        $("folderName").focus();
+
+        return;
+    }
+
+    const duplicate =
+        data.folders.some(
+            folder =>
+                !folder.deleted &&
+                (folder.parent || null) ===
+                (parentFolder || null) &&
+                folder.name.toLowerCase() ===
+                name.toLowerCase()
+        );
+
+    if (duplicate) {
+
+        alert(
+            "Un dossier portant ce nom existe déjà à cet emplacement."
+        );
+
+        return;
+    }
+
+    data.folders.push({
+
+        id: id(),
+        name,
+        parent: parentFolder,
+        created: Date.now(),
+        updated: Date.now(),
+        deleted: false
+
+    });
+
+    saveData();
+    closeModal();
+    render();
+}
+
+function renameFolder(folderId) {
+
+    const folder =
+        getFolder(folderId);
+
+    if (!folder)
+        return;
+
+    const name =
+        prompt(
+            "Nouveau nom du dossier :",
+            folder.name
+        );
+
+    if (!name || !name.trim())
+        return;
+
+    const cleanName =
+        name.trim();
+
+    const duplicate =
+        data.folders.some(
+            other =>
+                other.id !== folderId &&
+                !other.deleted &&
+                (other.parent || null) ===
+                (folder.parent || null) &&
+                other.name.toLowerCase() ===
+                cleanName.toLowerCase()
+        );
+
+    if (duplicate) {
+
+        alert(
+            "Un dossier portant ce nom existe déjà à cet emplacement."
+        );
+
+        return;
+    }
+
+    folder.name =
+        cleanName;
+
+    folder.updated =
+        Date.now();
+
+    saveData();
+    render();
+}
+
+function deleteFolder(folderId) {
+
+    const folder =
+        getFolder(folderId);
+
+    if (!folder)
+        return;
+
+    const descendants =
+        getFolderDescendants(folderId);
+
+    const allFolderIds =
+        [
+            folderId,
+            ...descendants
+        ];
+
+    if (
+        !confirm(
+            `Supprimer "${folder.name}" et ses sous-dossiers ?\n\nLes notes contenues seront déplacées vers la corbeille.`
+        )
+    )
+        return;
+
+    data.folders.forEach(f => {
+
+        if (
+            allFolderIds.includes(f.id)
+        ) {
+
+            f.deleted = true;
+            f.deletedAt = Date.now();
+        }
+
+    });
+
+    data.notes.forEach(note => {
+
+        if (
+            allFolderIds.includes(note.folder)
+        ) {
+
+            note.deleted = true;
+            note.deletedAt = Date.now();
+        }
+
+    });
+
+    saveData();
+
+    currentView = "all";
+    currentFolder = null;
+
+    render();
+}
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+function createNote() {
+
+    const now = Date.now();
+
+    const note = {
+
+        id: id(),
+
+        title:
+            "Nouvelle note",
+
+        content: "",
+
+        folder:
+            currentView === "folder"
+                ? currentFolder
+                : null,
+
+        favorite: false,
+
+        created: now,
+
+        updated: now,
+
+        deleted: false
+
+    };
+
+    data.notes.push(note);
+
+    saveData();
+
+    openNote(note.id);
+}
+
+function openNote(noteId) {
+
+    const note =
+        data.notes.find(
+            n =>
+                n.id === noteId &&
+                !n.deleted
+        );
+
+    if (!note)
+        return;
+
+    currentNote =
+        note.id;
+
+    $("listPage")
+        .classList
+        .add("hidden");
+
+    $("editor")
+        .classList
+        .remove("hidden");
+
+    $("noteTitle").value =
+        note.title;
+
+    $("noteContent").innerHTML =
+        note.content || "";
+
+    $("noteFolder").textContent =
+        "📁 " +
+        folderName(note.folder);
+
+    $("noteDate").textContent =
+        "Modifiée " +
+        dateText(note.updated);
+
+    $("saveNoteBtn").textContent =
+        "💾 Enregistrer";
+
+    $("saveNoteBtn")
+        .classList
+        .remove("saved");
+
+    $("editorSave").textContent =
+        "✓ Enregistré";
+
+    updateFavorite();
+
+    setTimeout(() => {
+
+        $("noteTitle").focus();
+
+    }, 50);
+}
+
+function closeEditor() {
+
+    if (currentNote) {
+
+        saveNote();
+    }
+
+    currentNote = null;
+
+    clearTimeout(saveTimer);
+
+    $("editor")
+        .classList
+        .add("hidden");
+
+    $("listPage")
+        .classList
+        .remove("hidden");
+}
+
+/* =========================================================
+   ENREGISTRER
+========================================================= */
+
+function saveNote() {
+
+    if (!currentNote)
+        return;
+
+    const note =
+        data.notes.find(
+            n =>
+                n.id === currentNote
+        );
+
+    if (!note)
+        return;
+
+    note.title =
+        $("noteTitle")
+            .value
+            .trim() ||
+        "Sans titre";
+
+    note.content =
+        $("noteContent")
+            .innerHTML;
+
+    note.updated =
+        Date.now();
+
+    saveData();
+
+    $("noteDate").textContent =
+        "Modifiée " +
+        dateText(note.updated);
+
+    const button =
+        $("saveNoteBtn");
+
+    button.classList.add("saved");
+
+    button.textContent =
+        "✓ Enregistré";
+
+    setTimeout(() => {
+
+        if (!button)
+            return;
+
+        button.classList.remove("saved");
+
+        button.textContent =
+            "💾 Enregistrer";
+
+    }, 1200);
+}
+
+/* =========================================================
+   SAUVEGARDE AUTO
+========================================================= */
+
+function autoSave() {
+
+    if (!currentNote)
+        return;
+
+    $("saveStatus").textContent =
+        "⟳ Enregistrement...";
+
+    $("editorSave").textContent =
+        "⟳ Enregistrement...";
+
+    clearTimeout(saveTimer);
+
+    saveTimer =
+        setTimeout(
+            saveNote,
+            700
+        );
+}
+
+/* =========================================================
+   FAVORI
+========================================================= */
+
+function toggleFavorite() {
+
+    const note =
+        data.notes.find(
+            n =>
+                n.id === currentNote
+        );
+
+    if (!note)
+        return;
+
+    note.favorite =
+        !note.favorite;
+
+    note.updated =
+        Date.now();
+
+    saveData();
+
+    updateFavorite();
+}
+
+function updateFavorite() {
+
+    const note =
+        data.notes.find(
+            n =>
+                n.id === currentNote
+        );
+
+    if (!note)
+        return;
+
+    $("favorite").textContent =
+        note.favorite
+            ? "★"
+            : "☆";
+
+    $("favorite").style.color =
+        note.favorite
+            ? "#f59e0b"
+            : "";
+}
+
+/* =========================================================
+   SUPPRESSION
+========================================================= */
+
+function deleteCurrentNote() {
+
+    const note =
+        data.notes.find(
+            n =>
+                n.id === currentNote
+        );
+
+    if (!note)
+        return;
+
+    if (
+        !confirm(
+            `Supprimer "${note.title}" ?`
+        )
+    )
+        return;
+
+    clearTimeout(saveTimer);
+
+    note.title =
+        $("noteTitle")
+            .value
+            .trim() ||
+        "Sans titre";
+
+    note.content =
+        $("noteContent")
+            .innerHTML;
+
+    note.updated =
+        Date.now();
+
+    note.deleted = true;
+    note.deletedAt = Date.now();
+
+    saveData();
+
+    currentNote = null;
+
+    $("editor")
+        .classList
+        .add("hidden");
+
+    $("listPage")
+        .classList
+        .remove("hidden");
+
+    render();
+}
+
+/* =========================================================
+   NOTES VISIBLES
+========================================================= */
+
+function getVisibleNotes() {
+
+    let notes =
+        data.notes.filter(
+            n =>
+                !n.deleted
+        );
+
+    if (
+        currentView === "favorites"
+    ) {
+
+        notes =
+            notes.filter(
+                n =>
+                    n.favorite
+            );
+    }
+
+    if (
+        currentView === "folder"
+    ) {
+
+        notes =
+            notes.filter(
+                n =>
+                    n.folder ===
+                    currentFolder
+            );
+    }
+
+    if (searchText) {
+
+        const q =
+            searchText
+                .toLowerCase();
+
+        notes =
+            notes.filter(note => {
+
+                const title =
+                    String(note.title || "")
+                        .toLowerCase();
+
+                const content =
+                    htmlToText(
+                        note.content
+                    )
+                    .toLowerCase();
+
+                return (
+                    title.includes(q) ||
+                    content.includes(q)
+                );
+            });
+    }
+
+    if (
+        currentView === "recent"
+    ) {
+
+        notes.sort(
+            (a,b) =>
+                (b.updated || 0) -
+                (a.updated || 0)
+        );
+
+        notes =
+            notes.slice(0, 20);
+
+    } else if (
+        sortType === "title"
+    ) {
+
+        notes.sort(
+            (a,b) =>
+                String(a.title || "")
+                    .localeCompare(
+                        String(b.title || ""),
+                        "fr",
+                        {
+                            sensitivity: "base"
+                        }
+                    )
+        );
+
+    } else if (
+        sortType === "created"
+    ) {
+
+        notes.sort(
+            (a,b) =>
+                (b.created || 0) -
+                (a.created || 0)
+        );
+
+    } else {
+
+        notes.sort(
+            (a,b) =>
+                (b.updated || 0) -
+                (a.updated || 0)
+        );
+    }
+
+    return notes;
+}
+
+/* =========================================================
+   AFFICHAGE NOTES
+========================================================= */
+
+function resetEmptyState() {
+
+    $("empty").innerHTML = `
+
+        <div class="empty-icon">
+            📝
+        </div>
+
+        <h3>Aucune note</h3>
+
+        <p>
+            Commencez à écrire votre première note.
+        </p>
+
+        <button
+            class="btn primary"
+            id="emptyButton"
+        >
+            ＋ Créer une note
+        </button>
+    `;
+
+    $("emptyButton").onclick =
+        createNote;
+}
+
+function renderNotes() {
+
+    const container =
+        $("notes");
+
+    resetEmptyState();
+
+    container.innerHTML = "";
+
+    const notes =
+        getVisibleNotes();
+
+    if (!notes.length) {
+
+        container.classList
+            .add("hidden");
+
+        $("empty")
+            .classList
+            .remove("hidden");
+
+        return;
+    }
+
+    container.classList
+        .remove("hidden");
+
+    $("empty")
+        .classList
+        .add("hidden");
+
+    notes.forEach(note => {
+
+        const card =
+            document.createElement("article");
+
+        card.className = "note";
+
+        card.onclick =
+            () =>
+                openNote(note.id);
+
+        card.innerHTML = `
+
+            <div class="note-header">
+
+                <h3>
+                    ${safe(
+                        note.title ||
+                        "Sans titre"
+                    )}
+                </h3>
+
+                ${
+                    note.favorite
+                        ? `<span class="star">★</span>`
+                        : ""
+                }
+
+            </div>
+
+            <div class="preview">
+
+                ${safe(
+                    htmlToText(
+                        note.content
+                    ) ||
+                    "Aucun contenu..."
+                )}
+
+            </div>
+
+            <div class="note-footer">
+
+                <span>
+                    📁 ${safe(
+                        folderName(
+                            note.folder
+                        )
+                    )}
+                </span>
+
+                <span>
+                    ${dateText(
+                        note.updated
+                    )}
+                </span>
+
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   CORBEILLE
+========================================================= */
+
+function renderTrash() {
+
+    const container =
+        $("notes");
+
+    container.innerHTML = "";
+
+    const trash =
+        data.notes
+            .filter(
+                n =>
+                    n.deleted
+            )
+            .sort(
+                (a,b) =>
+                    (b.deletedAt || b.updated || 0) -
+                    (a.deletedAt || a.updated || 0)
+            );
+
+    if (!trash.length) {
+
+        container.classList
+            .add("hidden");
+
+        $("empty")
+            .classList
+            .remove("hidden");
+
+        $("empty").innerHTML = `
+
+            <div class="empty-icon">
+                🗑️
+            </div>
+
+            <h3>
+                Corbeille vide
+            </h3>
+
+            <p>
+                Aucune note supprimée.
+            </p>
+        `;
+
+        return;
+    }
+
+    container.classList
+        .remove("hidden");
+
+    $("empty")
+        .classList
+        .add("hidden");
+
+    trash.forEach(note => {
+
+        const card =
+            document.createElement("article");
+
+        card.className = "note";
+
+        card.innerHTML = `
+
+            <div class="note-header">
+
+                <h3>
+                    ${safe(
+                        note.title ||
+                        "Sans titre"
+                    )}
+                </h3>
+
+            </div>
+
+            <div class="preview">
+
+                ${safe(
+                    htmlToText(
+                        note.content
+                    ) ||
+                    "Aucun contenu..."
+                )}
+
+            </div>
+
+            <div class="note-footer">
+
+                <button
+                    class="btn secondary restore"
+                    type="button"
+                >
+                    ↩ Restaurer
+                </button>
+
+                <button
+                    class="favorite permanent"
+                    type="button"
+                    title="Supprimer définitivement"
+                >
+                    🗑️
+                </button>
+
+            </div>
+        `;
+
+        card.querySelector(".restore")
+            .onclick = event => {
+
+                event.stopPropagation();
+
+                note.deleted = false;
+                delete note.deletedAt;
+
+                note.updated =
+                    Date.now();
+
+                saveData();
+                render();
+            };
+
+        card.querySelector(".permanent")
+            .onclick = event => {
+
+                event.stopPropagation();
+
+                if (
+                    !confirm(
+                        "Supprimer définitivement cette note ?\n\nCette action est irréversible."
+                    )
+                )
+                    return;
+
+                data.notes =
+                    data.notes.filter(
+                        n =>
+                            n.id !==
+                            note.id
+                    );
+
+                saveData();
+                render();
+            };
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+function updatePage() {
+
+    if (currentView === "all") {
+
+        $("pageTitle").textContent =
+            "Toutes les notes";
+
+        $("pageDescription").textContent =
+            "Retrouvez toutes vos notes.";
+
+        $("notesTitle").textContent =
+            "Mes notes";
+
+        $("breadcrumb").textContent =
+            "Accueil";
+
+    }
+
+    else if (
+        currentView === "recent"
+    ) {
+
+        $("pageTitle").textContent =
+            "Notes récentes";
+
+        $("pageDescription").textContent =
+            "Vos notes récemment modifiées.";
+
+        $("notesTitle").textContent =
+            "Dernières notes";
+
+        $("breadcrumb").textContent =
+            "Accueil / Récentes";
+
+    }
+
+    else if (
+        currentView === "favorites"
+    ) {
+
+        $("pageTitle").textContent =
+            "Favoris";
+
+        $("pageDescription").textContent =
+            "Vos notes importantes.";
+
+        $("notesTitle").textContent =
+            "Mes favoris";
+
+        $("breadcrumb").textContent =
+            "Accueil / Favoris";
+
+    }
+
+    else if (
+        currentView === "trash"
+    ) {
+
+        $("pageTitle").textContent =
+            "Corbeille";
+
+        $("pageDescription").textContent =
+            "Notes supprimées.";
+
+        $("notesTitle").textContent =
+            "Corbeille";
+
+        $("breadcrumb").textContent =
+            "Accueil / Corbeille";
+
+    }
+
+    else if (
+        currentView === "folder"
+    ) {
+
+        const folder =
+            getFolder(currentFolder);
+
+        $("pageTitle").textContent =
+            folder
+                ? folder.name
+                : "Dossier";
+
+        $("pageDescription").textContent =
+            "Notes de ce dossier.";
+
+        $("notesTitle").textContent =
+            "Notes du dossier";
+
+        $("breadcrumb").textContent =
+            "Accueil / " +
+            (
+                folder
+                    ? folder.name
+                    : ""
+            );
+    }
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    const notes =
+        data.notes.filter(
+            n =>
+                !n.deleted
+        );
+
+    const folders =
+        data.folders.filter(
+            f =>
+                !f.deleted
+        );
+
+    const favorites =
+        notes.filter(
+            n =>
+                n.favorite
+        );
+
+    const trash =
+        data.notes.filter(
+            n =>
+                n.deleted
+        );
+
+    $("statNotes").textContent =
+        notes.length;
+
+    $("statFolders").textContent =
+        folders.length;
+
+    $("statFavorites").textContent =
+        favorites.length;
+
+    $("noteCount").textContent =
+        notes.length;
+
+    $("trashCount").textContent =
+        trash.length;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function updateNavigation() {
+
+    document
+        .querySelectorAll(
+            ".nav button[data-view]"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.view ===
+                currentView
+            );
+
+        });
+
+    document
+        .querySelectorAll(
+            ".mobile-bottom button[data-mobile-view]"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.mobileView ===
+                currentView
+            );
+
+        });
+}
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    renderFolders();
+
+    updateStats();
+
+    updatePage();
+
+    updateNavigation();
+
+    if (
+        currentView === "trash"
+    ) {
+
+        renderTrash();
+
+    } else {
+
+        renderNotes();
+
+    }
+}
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("newNote").onclick =
+    createNote;
+
+$("headerNewNote").onclick =
+    createNote;
+
+$("emptyButton").onclick =
+    createNote;
+
+$("mobileNew").onclick =
+    createNote;
+
+$("newFolder").onclick =
+    () =>
+        openFolder();
+
+$("quickFolder").onclick =
+    () =>
+        openFolder();
+
+$("closeModal").onclick =
+    closeModal;
+
+$("cancelModal").onclick =
+    closeModal;
+
+$("createFolder").onclick =
+    createFolder;
+
+$("back").onclick =
+    closeEditor;
+
+$("saveNoteBtn").onclick =
+    saveNote;
+
+$("deleteNote").onclick =
+    deleteCurrentNote;
+
+$("favorite").onclick =
+    toggleFavorite;
+
+/* =========================================================
+   FERMETURE MODALE EN CLIQUANT À L'EXTÉRIEUR
+========================================================= */
+
+$("folderModal")
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                $("folderModal")
+            ) {
+
+                closeModal();
+            }
+        }
+    );
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$("search").addEventListener(
+    "input",
+    event => {
+
+        searchText =
+            event.target.value
+                .trim();
+
+        currentView = "all";
+        currentFolder = null;
+
+        render();
+    }
+);
+
+/* =========================================================
+   SORT
+========================================================= */
+
+$("sort").onchange =
+    event => {
+
+        sortType =
+            event.target.value;
+
+        renderNotes();
+    };
+
+/* =========================================================
+   INPUT NOTE
+========================================================= */
+
+$("noteTitle")
+    .addEventListener(
+        "input",
+        autoSave
+    );
+
+$("noteContent")
+    .addEventListener(
+        "input",
+        autoSave
+    );
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".toolbar button"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "mousedown",
+            event => {
+
+                event.preventDefault();
+
+                $("noteContent")
+                    .focus();
+
+                const command =
+                    button.dataset.command;
+
+                const value =
+                    button.dataset.value;
+
+                if (
+                    command ===
+                    "formatBlock"
+                ) {
+
+                    document.execCommand(
+                        command,
+                        false,
+                        `<${value}>`
+                    );
+
+                } else {
+
+                    document.execCommand(
+                        command,
+                        false,
+                        value
+                    );
+                }
+
+                autoSave();
+            }
+        );
+    });
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".nav button[data-view]"
+    )
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            if (
+                currentNote
+            ) {
+
+                saveNote();
+            }
+
+            currentView =
+                button.dataset.view;
+
+            currentFolder = null;
+
+            searchText = "";
+
+            $("search").value = "";
+
+            closeEditor();
+
+            render();
+
+            $("sidebar")
+                .classList
+                .remove("open");
+        };
+    });
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".mobile-bottom button[data-mobile-view]"
+    )
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            if (
+                currentNote
+            ) {
+
+                saveNote();
+            }
+
+            currentView =
+                button.dataset.mobileView;
+
+            currentFolder = null;
+
+            searchText = "";
+
+            $("search").value = "";
+
+            closeEditor();
+
+            render();
+        };
+    });
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+$("mobileMenu").onclick =
+    () => {
+
+        $("sidebar")
+            .classList
+            .toggle("open");
+    };
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+$("darkMode").onclick =
+    () => {
+
+        data.dark =
+            !data.dark;
+
+        document.body
+            .classList
+            .toggle(
+                "dark",
+                data.dark
+            );
+
+        saveData();
+    };
+
+/* =========================================================
+   DOSSIER ENTER
+========================================================= */
+
+$("folderName")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                createFolder();
+            }
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                event.preventDefault();
+
+                closeModal();
+            }
+        }
+    );
+
+/* =========================================================
+   RACCOURCIS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        const ctrl =
+            event.ctrlKey ||
+            event.metaKey;
+
+        if (
+            ctrl &&
+            event.key.toLowerCase() === "s"
+        ) {
+
+            event.preventDefault();
+
+            saveNote();
+        }
+
+        if (
+            ctrl &&
+            event.key.toLowerCase() === "n"
+        ) {
+
+            event.preventDefault();
+
+            createNote();
+        }
+
+        if (
+            event.key === "Escape" &&
+            !$("folderModal")
+                .classList
+                .contains("hidden")
+        ) {
+
+            closeModal();
+        }
+    }
+);
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+document.body
+    .classList
+    .toggle(
+        "dark",
+        data.dark
+    );
+
+render();
+
+</script>
+
+</body>
+</html>
